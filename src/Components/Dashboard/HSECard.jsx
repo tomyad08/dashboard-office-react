@@ -5,13 +5,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import { DataEmployee } from "../../DataDummy/DataEmployee";
 import { DataTime } from "../../DataDummy/Time";
 import { CategoriesHSE } from "../../DataDummy/DataCategoriesHSE";
+import { Link, useNavigate } from "react-router-dom";
 
 const FormHSECard = () => {
+  const navigate = useNavigate();
   const [Name, setName] = useState("");
   const [department, setDepartment] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [startTime, setStartTime] = useState("");
   const [category, setCategory] = useState("");
+  const [condition, setCondition] = useState(false);
 
   const data = DataEmployee;
   const Time = DataTime;
@@ -28,8 +31,22 @@ const FormHSECard = () => {
   const style =
     "p-4 border-b-1 w-full bg-white drop-shadow-xl rounded-lg my-2 focus:outline-none";
 
+  const handleSubmit = () => {
+    setCondition(true);
+    setTimeout(() => {
+      navigate("/home");
+    }, 3000);
+  };
+
   return (
     <div className="py-5" style={{ fontFamily: " 'Geologica', sans-serif" }}>
+      <div className="flex justify-center">
+        {condition && (
+          <h1 className="text-center bg-green-200 p-1 fixed rounded-lg z-10 px-10 drop-shadow-xl">
+            Data has recorded, thank you.
+          </h1>
+        )}
+      </div>
       <div className="flex justify-center">
         <div className="w-2/4">
           <h1 className="text-2xl mt-5 font-bold border-b-2 border-green-800 w-50">
@@ -111,10 +128,16 @@ const FormHSECard = () => {
           />
           <br />
           <div className="flex justify-end mt-5">
-            <button className="px-5 py-2 bg-blue-700 rounded-lg mx-5 text-white font-semibold">
-              Back
-            </button>
-            <button className="px-5 py-2 bg-green-800 rounded-lg text-white font-semibold">
+            <Link to="/home">
+              {" "}
+              <button className="px-5 py-2 bg-blue-700 rounded-lg mx-5 text-white font-semibold">
+                Back
+              </button>
+            </Link>
+            <button
+              className="px-5 py-2 bg-green-800 rounded-lg text-white font-semibold"
+              onClick={handleSubmit}
+            >
               Submit
             </button>
           </div>
