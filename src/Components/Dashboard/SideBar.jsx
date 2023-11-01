@@ -1,10 +1,43 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataSideBar } from "../../DataDummy/DataSideBar";
+import SelectSideBar from "../GeneralComponents/SelectSideBar";
 
 const SideBar = () => {
   const navigate = useNavigate();
   const listmenu = DataSideBar;
+  const [select, setSelect] = useState(listmenu);
+  //() => navigate(value.routerLink)
+
+  const handleSide = (id, routerLink) => {
+    let Change = [];
+    listmenu.map((value) => {
+      if (value.id == id) {
+        Change.push({
+          id: id,
+          name: value.name,
+          d1: value.d1,
+          d2: value.d2,
+          routerLink: value.routerLink,
+          status: true,
+        });
+      } else {
+        Change.push({
+          id: value.id,
+          name: value.name,
+          d1: value.d1,
+          d2: value.d2,
+          routerLink: value.routerLink,
+          status: false,
+        });
+      }
+    });
+
+    setSelect(Change);
+    navigate(routerLink);
+  };
+
   return (
     <div
       className="w-1/5 bg-green-800 h-screen"
@@ -14,24 +47,12 @@ const SideBar = () => {
         <img src="./assets/Login/harmony_energi.png" alt=" " className="w-20" />
         <div className="w-32 h-10 bg-green-900 my-2"></div>
       </div>
-      {listmenu.map((value) => (
+      {select.map((value) => (
         <div
-          className="mx-5 flex justify-start text-white hover:bg-green-100 rounded-lg hover:cursor-pointer hover:text-black p-2"
-          onClick={() => navigate(value.routerLink)}
+          onClick={() => handleSide(value.id, value.routerLink)}
           key={value.id}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            className="bi bi-question-circle"
-            viewBox="0 0 16 16"
-          >
-            <path d={value.d1} />
-            <path d={value.d2} />
-          </svg>
-          <h1 className="mx-2 text-sm">{value.name}</h1>
+          <SelectSideBar input={value} />
         </div>
       ))}
     </div>
